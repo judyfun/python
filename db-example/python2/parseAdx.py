@@ -66,12 +66,12 @@ def parse_adx_log():
                 date, hour, pla, style, bidf, tobid, wbid, dspWin = parse_field(line)
 
                 # 判断 下游id
-                if (pla in dict):
+                if pla in dict:
 
                     dict_pla = dict[pla]
 
                     # 判断 style
-                    if (style in dict_pla):
+                    if style in dict_pla:
                         dict_pla_style = dict_pla[style]
 
                         dict_pla_style['bidf'] += bidf
