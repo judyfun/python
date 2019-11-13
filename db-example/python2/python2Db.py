@@ -3,8 +3,8 @@
 import MySQLdb
 import traceback
 
-from .ParseAdx import *
-from .ParseInvalidLog import *
+import ParseAdx
+import ParseInvalidLog
 
 host = "webdb.mobirtb.com"
 user = "webadx"
@@ -33,14 +33,14 @@ def selectData():
 
 # 将日志参数转化为sql的参数
 def parse_adx_log_to_db_args():
-    adx_dict = parse_adx_log()
-    adx_list = adx_dict_to_list(adx_dict)
+    adx_dict = ParseAdx.parse_adx_log()
+    adx_list = ParseAdx.adx_dict_to_list(adx_dict)
     return adx_list
 
 
 def parse_ssp_invalid_log_to_db_args():
-    invalid_dict = parse_sspinvalid_log()
-    invalid_list = invalid_dict_to_list(invalid_dict)
+    invalid_dict = ParseInvalidLog.parse_sspinvalid_log()
+    invalid_list = ParseInvalidLog.invalid_dict_to_list(invalid_dict)
     return invalid_list
 
 
