@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
-
+import sys
+sys.path.append("..")
 import MySQLdb
 import traceback
 
