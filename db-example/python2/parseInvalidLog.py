@@ -4,10 +4,10 @@ import traceback
 import Common as Common
 
 file_path = "D:\\mexdoc\\adx_new\\"
-file_name = "ssp_invalid.log"
+invalid_file_name = "ssp_invalid.log"
 
 
-def build_new_dict_plaStyle(date, hour, pla, style, reqf, trif, country):
+def build_new_dict_plaStyle_invalid(date, hour, pla, style, reqf, trif, country):
     if (len(trif) == 0):
         return {
             pla: {
@@ -47,7 +47,7 @@ def build_new_dict_plaStyle(date, hour, pla, style, reqf, trif, country):
         }
 
 
-def build_new_dict_style(date, hour, pla, style, reqf, trif, country):
+def build_new_dict_style_invalid(date, hour, pla, style, reqf, trif, country):
     return {
         style: {
             'date': date,
@@ -90,7 +90,7 @@ def build_new_dict_style(date, hour, pla, style, reqf, trif, country):
 """
 
 
-def re_build_reqf(dict_pla_style, reqf):
+def re_build_reqf_invalid(dict_pla_style, reqf):
     dict_reqf = dict_pla_style['reqf']
     if (reqf in dict_reqf):
         # 有reqf
@@ -101,7 +101,7 @@ def re_build_reqf(dict_pla_style, reqf):
 
 
 # trif=11_1,13_8,17_2
-def re_build_trif(dict_pla_style, trif):
+def re_build_trif_invalid(dict_pla_style, trif):
     dict_reqf = dict_pla_style['trif']
     if (trif in dict_reqf):
         # 有reqf
@@ -111,7 +111,7 @@ def re_build_trif(dict_pla_style, trif):
         dict_reqf[trif] = 1
 
 
-def re_build_country(dict_pla_style, country):
+def re_build_country_invalid(dict_pla_style, country):
     dict_reqf = dict_pla_style['country']
     if (country in dict_reqf):
         # 有reqf
@@ -122,7 +122,7 @@ def re_build_country(dict_pla_style, country):
 
 
 def parse_sspinvalid_log():
-    file_ = file_path + file_name + "." + Common.last_hour2()
+    file_ = file_path + invalid_file_name + "." + Common.last_hour2()
     dict_log = {}
     try:
         f = open(file_, 'r')
@@ -130,7 +130,7 @@ def parse_sspinvalid_log():
         for line in f:
             if "logt=" in line:
                 # 解析字段
-                date, hour, pla, style, reqf, trif, country = parse_field(line)
+                date, hour, pla, style, reqf, trif, country = parse_invalid_field(line)
                 # 判断 下游id
                 if pla in dict_log:
                     # 在列表中
@@ -141,22 +141,22 @@ def parse_sspinvalid_log():
                         dict_pla_style = dict_pla[style]
                         dict_pla_style['count'] += 1
                         if len(reqf) > 0:
-                            re_build_reqf(dict_pla_style, reqf)
+                            re_build_reqf_invalid(dict_pla_style, reqf)
                         # if len(trif) > 0:
                         #     reBuildTrif(dict_pla_style, trif)
                         if len(country) > 0:
-                            re_build_country(dict_pla_style, country)
+                            re_build_country_invalid(dict_pla_style, country)
 
 
 
                     else:
                         # style 不在列表中, create new style
-                        dict_style = build_new_dict_style(date, hour, pla, style, reqf, trif, country)
+                        dict_style = build_new_dict_style_invalid(date, hour, pla, style, reqf, trif, country)
                         dict_pla.update(dict_style)
 
                 else:
                     # 不在列表中，create new dict_pla
-                    dict_pla_style = build_new_dict_plaStyle(date, hour, pla, style, reqf, trif, country)
+                    dict_pla_style = build_new_dict_plaStyle_invalid(date, hour, pla, style, reqf, trif, country)
                     dict_log.update(dict_pla_style)
                 # print(line)
         print(dict_log)
@@ -166,7 +166,7 @@ def parse_sspinvalid_log():
         traceback.print_exc()
 
 
-def parse_field(line):
+def parse_invalid_field(line):
     # line = "2019-11-08 06:00:01 INFO :  logt=2 pub=118 pla=1023 app=f4dab4f875ee pos= style=2 code=2 reqf=86 trif= country=usa bud=com.bstech.reader.pdf.viewer os=2"
     print(line)
     date, hour, post_line = line.split(" ", 2)
@@ -251,5 +251,5 @@ def invalid_dict_to_list(invalid_dict):
 
 if __name__ == '__main__':
     parse_sspinvalid_log()
-    file_ = file_path + file_name + "." + Common.last_hour2()
+    file_ = file_path + invalid_file_name + "." + Common.last_hour2()
     print(file_)
