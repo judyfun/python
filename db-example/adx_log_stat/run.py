@@ -148,7 +148,8 @@ def re_build_country_invalid(dict_pla_style, country):
             # 没有reqf
             dict_reqf[country] = 1
     else:
-        print("country bigger than 10")
+        #print("country bigger than 10")
+        pass
 
 
 def parse_sspinvalid_log():
