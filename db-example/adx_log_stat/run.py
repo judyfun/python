@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-
+import sys
 import datetime
 import traceback
 
@@ -11,8 +11,16 @@ user = "webadx"
 pwd = "Admin@1234"
 dbname = "req_res_db"
 
-# file_path = "D:\\mexdoc\\adx_new\\"
-file_path = "/data/adbin/ad_adx/log/"
+
+def os_file_path():
+    file_path = ""
+    if "win" in sys.platform:
+        file_path = "D:\\mexdoc\\adx_new\\"
+    else:
+        file_path = "/data/adbin/ad_adx/log/"
+
+    return file_path
+
 
 def formatDate(date, hour):
     date = date.replace('-', '')
@@ -23,7 +31,6 @@ def formatDate(date, hour):
 # 2019-11-12-18
 def last_hour2():
     last = (datetime.datetime.now() - datetime.timedelta(hours=1)).strftime("%Y-%m-%d-%H")
-    print(last)
     return last
 
 
@@ -35,7 +42,7 @@ invalid_file_name = "ssp_invalid.log"
 
 
 def build_new_dict_plaStyle_invalid(date, hour, pla, style, reqf, trif, country):
-    if (len(trif) == 0):
+    if len(trif) == 0:
         return {
             pla: {
                 style: {
@@ -148,12 +155,13 @@ def re_build_country_invalid(dict_pla_style, country):
             # 没有reqf
             dict_reqf[country] = 1
     else:
-        #print("country bigger than 10")
+        # print("country bigger than 10")
         pass
 
 
 def parse_sspinvalid_log():
-    file_ = file_path + invalid_file_name + "." + last_hour2()
+    file_ = os_file_path() + invalid_file_name + "." + last_hour2()
+    print(file_)
     dict_log = {}
     try:
         f = open(file_, 'r')
@@ -190,7 +198,7 @@ def parse_sspinvalid_log():
                     dict_pla_style = build_new_dict_plaStyle_invalid(date, hour, pla, style, reqf, trif, country)
                     dict_log.update(dict_pla_style)
                 # print(line)
-        print(dict_log)
+        # print(dict_log)
         return dict_log
     except Exception, e:
         print("error: read invalid file error")
@@ -228,9 +236,6 @@ def parse_invalid_field(line):
 
     return date, hour, pla, style, reqf, trif, country
 
-
-if __name__ == '__main__':
-    parse_sspinvalid_log()
 
 """
 {
@@ -284,7 +289,7 @@ def invalid_dict_to_list(invalid_dict):
 # invalid end
 #####################
 
-#################### start
+#################### adx start
 adx_file_name = "adx.log"
 
 '''
@@ -335,7 +340,8 @@ def build_new_dict_style_adx(date, hour, pla, style, bidf, tobid, wbid, dspWin):
 
 def parse_adx_log():
     # filePath = "D:\\doc\\MEX\\adx.log"
-    file_ = file_path + adx_file_name + "." + last_hour2()
+    file_ = os_file_path() + adx_file_name + "." + last_hour2()
+    print(file_)
     dict = {}
     try:
         f = open(file_, 'r')
@@ -372,7 +378,7 @@ def parse_adx_log():
                     dict_pla_style = build_new_dict_pla_style_adx(date, hour, pla, style, bidf, tobid, wbid, dspWin)
                     dict.update(dict_pla_style)
 
-        print(dict)
+        # print(dict)
         return dict
 
     except Exception, e:
@@ -462,7 +468,7 @@ def adx_dict_to_list(dict_info):
     return argList
 
 
-###################### end
+###################### adx end
 
 
 # 将日志参数转化为sql的参数
@@ -495,6 +501,7 @@ def insert_adx_db():
              "(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
     argList = parse_adx_log_to_db_args()
+    print("adx arglist -> ", argList)
 
     try:
         cursor.executemany(newSql, argList)
@@ -518,6 +525,7 @@ def insert_ssp_invalid_db():
              "(%s,%s,%s,%s,%s,%s,%s,%s)"
 
     argList = parse_ssp_invalid_log_to_db_args()
+    print("invalid arglist -> ", argList)
 
     try:
         cursor.executemany(newSql, argList)
