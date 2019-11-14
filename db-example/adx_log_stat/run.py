@@ -140,12 +140,15 @@ def re_build_trif_invalid(dict_pla_style, trif):
 
 def re_build_country_invalid(dict_pla_style, country):
     dict_reqf = dict_pla_style['country']
-    if (country in dict_reqf):
-        # 有reqf
-        dict_reqf[country] += 1
+    if (len(dict_reqf) < 10):
+        if (country in dict_reqf):
+            # 有reqf
+            dict_reqf[country] += 1
+        else:
+            # 没有reqf
+            dict_reqf[country] = 1
     else:
-        # 没有reqf
-        dict_reqf[country] = 1
+        print("country bigger than 10")
 
 
 def parse_sspinvalid_log():
