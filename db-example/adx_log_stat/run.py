@@ -11,7 +11,8 @@ user = "webadx"
 pwd = "Admin@1234"
 dbname = "req_res_db"
 
-file_path = "D:\\mexdoc\\adx_new\\"
+# file_path = "D:\\mexdoc\\adx_new\\"
+file_path = "/data/adbin/ad_adx/log/"
 
 def formatDate(date, hour):
     date = date.replace('-', '')
