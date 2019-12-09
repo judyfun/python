@@ -81,13 +81,15 @@ def invalid_dict_to_list(invalid_dict):
                     budItems = dict_bud.items()
                     for (bud, info) in budItems:
                         argList.append(
+                            #date`, `hour`, `req_num`, `pla`, `style`, `scode`, `bud`
                             (info['date'],
                              info['hour'],
+                             info['count'],
                              pla,
                              style,
                              code,
-                             bud,
-                             info['count'],
+                             bud
                              )
                         )
+
     return argList
