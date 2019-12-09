@@ -140,3 +140,9 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+
+
+######################
+# idea
+######################
+.idea/workspace.xml
