@@ -48,7 +48,7 @@ def parse_sspinvalid_log():
         for line in f:
             index += 1
             if "logt=" in line:
-                print(index, line)
+                # print(index, line)
                 # 解析字段
                 date, hour, pla, style, code, bud = parse_invalid_field(line)
                 # 判断 下游id
@@ -280,7 +280,7 @@ def parse_ssp_invalid_log_to_db_args():
 
 # 插入数据
 def insert_to_db():
-    # insert_adx_db()
+    insert_adx_db()
     insert_ssp_invalid_db()
 
 
@@ -294,14 +294,15 @@ def insert_adx_db():
     newSql = "INSERT INTO `req_res_db`.`tab_adx_2` (`date`, `hour`, `pla`, `style`, `bud`, `req_num`, `dsp_win`, `bidfloor`, `tobid`,`wbid`) VALUES " \
              "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
+    starttime = datetime.datetime.now()
     argList = parse_adx_log_to_db_args()
-    # print("adx arglist -> ", argList)
+    print("parse adx log , count -> %s, cost %s secend" % (len(argList), datetime.datetime.now() - starttime))
 
     try:
+        starttime = datetime.datetime.now()
         cursor.executemany(newSql, argList)
         db.commit()
-        print("insert %s into db success.", len(argList))
-
+        print("insert into adx db success, count %s, cost %s secend" % (len(argList), datetime.datetime.now() - starttime))
     except:
         db.rollback()
         print("error: unable to insert db req_res_db.tab_adx")
@@ -320,15 +321,17 @@ def insert_ssp_invalid_db():
     # argList = []
     # arg = ('20191108', '06', '1025', '1', '2', '1080465358', 1)
     # argList.append(arg)
+    starttime = datetime.datetime.now()
     argList = parse_ssp_invalid_log_to_db_args()
+    print("parse invalid log , count -> %s, cost %s secend" % (len(argList), datetime.datetime.now() - starttime))
     # print("invalid arglist -> ", argList)
 
-
-
     try:
+        starttime = datetime.datetime.now()
         cursor.executemany(newSql, argList)
         db.commit()
-        print("insert %s into tab_ssp_invalid success.", len(argList))
+        print("insert into invalid db success, count %s, cost %s secend" % (
+        len(argList), datetime.datetime.now() - starttime))
 
     except Exception, e:
         db.rollback()
