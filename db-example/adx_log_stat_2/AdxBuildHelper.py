@@ -60,18 +60,19 @@ def adx_dict_to_list(dict_info):
                     if isinstance(dict_bud, dict):
                         bud_items = dict_bud.items()
                         for (bud, info) in bud_items:
-                            argList.append(
-                                (info['date'],
-                                 info['hour'],
-                                 pla,
-                                 style,
-                                 bud,
-                                 info['count'],
-                                 info['dspWin'],
-                                 round(info['bidf'], 6),
-                                 round(info['tobid'], 6),
-                                 round(info['wbid'], 6))
-                            )
+                            # 简单过滤一下 count < 360 过滤
+                            if int(info['count']) > 500:
+                                argList.append(
+                                    (info['date'],
+                                     info['hour'],
+                                     pla,
+                                     style,
+                                     bud,
+                                     info['count'],
+                                     info['dspWin'],
+                                     round(info['bidf'], 6),
+                                     round(info['tobid'], 6),
+                                     round(info['wbid'], 6))
+                                )
 
     return argList
-

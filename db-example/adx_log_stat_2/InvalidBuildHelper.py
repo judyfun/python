@@ -80,16 +80,16 @@ def invalid_dict_to_list(invalid_dict):
                 for (code, dict_bud) in codeItems:
                     budItems = dict_bud.items()
                     for (bud, info) in budItems:
-                        argList.append(
-                            #date`, `hour`, `req_num`, `pla`, `style`, `scode`, `bud`
-                            (info['date'],
-                             info['hour'],
-                             info['count'],
-                             pla,
-                             style,
-                             code,
-                             bud
-                             )
-                        )
-
+                        if int(info['count']) > 1000:
+                            argList.append(
+                                # date`, `hour`, `req_num`, `pla`, `style`, `scode`, `bud`
+                                (info['date'],
+                                 info['hour'],
+                                 info['count'],
+                                 pla,
+                                 style,
+                                 code,
+                                 bud
+                                 )
+                            )
     return argList
